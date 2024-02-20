@@ -2,6 +2,7 @@ import express from 'express';
 import jwt from 'jsonwebtoken';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
+import {authenticateToken} from "./middleware/authenticateToken";
 
 const app = express();
 const port = 3000;
@@ -58,6 +59,7 @@ app.post('/login', async (req, res) => {
     }
 });
 
+app.use('/users', authenticateToken);
 app.get('/users', async (req, res) => {
     try {
         console.log('\nBuscando usuários...\n');
