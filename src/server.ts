@@ -3,6 +3,8 @@ import jwt from 'jsonwebtoken';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import {authenticateToken} from "./middleware/authenticateToken";
+import {generateAndInsertFakeData} from "./data/baseData";
+import {UserModel, userSchema} from "./models/User";
 
 const app = express();
 const port = 3000;
@@ -17,7 +19,6 @@ mongoose.connection.on('connected', () => {
     // Você também pode exibir algumas informações sobre o banco de dados conectado
     console.log('Informações do banco de dados:');
     console.log(`Nome do banco de dados: ${mongoose.connection.name}`);
-    console.log(`Nome das tabelas banco de dados: ${mongoose.connection.db.collections()}`);
     console.log(`Host: ${mongoose.connection.host}`);
     console.log(`Porta: ${mongoose.connection.port}`);
 });
@@ -27,17 +28,10 @@ mongoose.connection.on('error', (error) => {
     console.error('Erro ao conectar ao banco de dados:', error);
 });
 
-// Definir o schema do usuário
-const userSchema = new mongoose.Schema({
-    cpf: String,
-    senha: String,
-});
-
-// Definir o modelo de usuário
-const UserModel = mongoose.model('User', userSchema);
+// Gera e grava os dados falsos apenas na primeira inicialização do servidor
+generateAndInsertFakeData();
 
 app.use(bodyParser.json());
-
 app.post('/login', async (req, res) => {
     const { cpf, senha } = req.body;
     try {
