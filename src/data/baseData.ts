@@ -1,4 +1,5 @@
-import fs from 'fs';
+import mongoose from 'mongoose';
+import { UserModel } from '../models/User'; // Importe o modelo de usuário
 
 // Função para gerar CPF aleatório
 function generateRandomCPF() {
@@ -19,20 +20,31 @@ function generateRandomPassword(length: number) {
     return password;
 }
 
-// Função para gerar e gravar dados falsos
-export function generateAndWriteFakeData() {
-    // Gerar dados falsos
-    const numberOfUsers = 10;
-    const fakeData = [];
+// Função para gerar e inserir dados falsos no banco de dados
+export async function generateAndInsertFakeData() {
+    try {
+        // Verifique se já existem dados no banco de dados
+        const existingUsers = await UserModel.find();
+        if (existingUsers.length > 0) {
+            console.log('Dados falsos já foram inseridos anteriormente. Não é necessário inserir novamente.');
+            return;
+        }
 
-    for (let i = 0; i < numberOfUsers; i++) {
-        const cpf = generateRandomCPF();
-        const senha = generateRandomPassword(4);
-        fakeData.push({ cpf, senha });
+        // Gerar dados falsos
+        const numberOfUsers = 10;
+        const fakeData = [];
+
+        for (let i = 0; i < numberOfUsers; i++) {
+            const cpf = generateRandomCPF();
+            const senha = generateRandomPassword(4);
+            fakeData.push({ cpf, senha });
+        }
+
+        // Inserir dados falsos no banco de dados
+        await UserModel.insertMany(fakeData);
+
+        console.log('Dados falsos inseridos no banco de dados com sucesso.');
+    } catch (error) {
+        console.error('Erro ao inserir dados falsos no banco de dados:', error);
     }
-
-    // Escrever os dados falsos em um arquivo JSON
-    fs.writeFileSync('fakeData.json', JSON.stringify(fakeData, null, 2));
-
-    console.log('Dados falsos gerados e gravados no arquivo fakeData.json');
 }
