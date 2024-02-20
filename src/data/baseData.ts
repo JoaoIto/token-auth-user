@@ -19,17 +19,20 @@ function generateRandomPassword(length: number) {
     return password;
 }
 
-// Gerar dados falsos
-const numberOfUsers = 10;
-const fakeData = [];
+// Função para gerar e gravar dados falsos
+export function generateAndWriteFakeData() {
+    // Gerar dados falsos
+    const numberOfUsers = 10;
+    const fakeData = [];
 
-for (let i = 0; i < numberOfUsers; i++) {
-    const cpf = generateRandomCPF();
-    const senha = generateRandomPassword(4);
-    fakeData.push({ cpf, senha });
+    for (let i = 0; i < numberOfUsers; i++) {
+        const cpf = generateRandomCPF();
+        const senha = generateRandomPassword(4);
+        fakeData.push({ cpf, senha });
+    }
+
+    // Escrever os dados falsos em um arquivo JSON
+    fs.writeFileSync('fakeData.json', JSON.stringify(fakeData, null, 2));
+
+    console.log('Dados falsos gerados e gravados no arquivo fakeData.json');
 }
-
-// Escrever os dados falsos em um arquivo JSON
-fs.writeFileSync('fakeData.json', JSON.stringify(fakeData, null, 2));
-
-console.log('Dados falsos gerados e gravados no arquivo fakeData.json');
