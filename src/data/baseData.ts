@@ -1,4 +1,3 @@
-import mongoose from 'mongoose';
 import { UserModel } from '../models/User'; // Importe o modelo de usuário
 
 // Função para gerar CPF aleatório

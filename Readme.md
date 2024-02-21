@@ -4,7 +4,7 @@ O intuito desse repositório é criar um componente padrão de token de autentic
 em node.js com Typescript, para ser usado sempre na autenticação de usuário usando a estrutura
 padrão de CPF e senha, e liberação do token, a partir de usuário também pré-criados, usando MongoDB.
 
-<img src="./github/baseTlDraw.jpeg">
+<img src="github/assets/baseTlDraw.jpeg">
 
 ---
 ## How start:
