@@ -1,5 +1,6 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
+import cors from 'cors';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import {authenticateToken} from "./middleware/authenticateToken";
@@ -7,8 +8,10 @@ import {generateAndInsertFakeData} from "./data/baseData";
 import {UserModel, userSchema} from "./models/User";
 
 const app = express();
-const port = 3000;
-const secretKey = 'secretKey';
+const port = 8080;
+// Habilitar o CORS para todos os endpoints
+app.use(cors());
+const secretKey = process.env.SECRET_KEY || 'defaultSecretKey';
 
 // Conectar ao banco de dados MongoDB
 mongoose.connect('mongodb://127.0.0.1:27017/mydatabase');
@@ -45,10 +48,28 @@ app.post('/login', async (req, res) => {
             return res.status(401).json({ error: 'Senha incorreta' });
         }
         // Gerar token JWT
+
         const token = jwt.sign({ cpf }, secretKey);
-        res.json({ token });
+        res.json({message: "Autenticado com sucesso!", token });
     } catch (error) {
         console.error('Erro durante a autenticação:', error);
+        res.status(500).json({ error: 'Erro interno do servidor' });
+    }
+});
+
+app.post('/register', async (req, res) => {
+    const { cpf, senha } = req.body;
+    try {
+        // Verificar se o usuário já existe no banco de dados
+        const existingUser = await UserModel.findOne({ cpf });
+        if (existingUser) {
+            return res.status(400).json({ error: 'Usuário já existe' });
+        }// Criar um novo usuário no banco de dados
+        const newUser = new UserModel({ cpf, senha });
+        await newUser.save();
+        res.status(201).json({ message: 'Usuário cadastrado com sucesso' });
+    } catch (error) {
+        console.error('Erro durante o cadastro:', error);
         res.status(500).json({ error: 'Erro interno do servidor' });
     }
 });
