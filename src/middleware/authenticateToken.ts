@@ -1,7 +1,7 @@
 // Middleware para autenticação
 import jwt from 'jsonwebtoken';
 
-const secretKey = 'secretKey';
+const secretKey = process.env.SECRET_KEY || 'defaultSecretKey';
 export const authenticateToken = (req: any, res: any, next: any) => {
     // Obter o token JWT do cabeçalho da requisição
     const token = req.headers['authorization'];
