@@ -97,13 +97,15 @@ app.post('/login', async (req, res) => {
 
 - **``Rota de users: ``**: Uma rota de get padrão, na qual ela usa autenticação, para garantir que possa devolver 
 todos os usuários existentes, somente caso o usuário requerente esteja enviando um token autenticado, que é validado.
-
+É bastante importante também entender, que filtrei o campo de senha, para que o usuário não tenha sua senha vazada, e assim
+possa devidamente ter esse dado resguardado, segundo a LGPD, (Lei Geral de Proteção de Dados,) fala.
 ````ts
+app.use('/users', authenticateToken);
 app.get('/users', async (req, res) => {
     try {
         console.log('\nBuscando usuários...\n');
         // Buscar todos os usuários no banco de dados
-        const users = await UserModel.find();
+        const users = await UserModel.find({}, 'cpf');
         console.log('Usuários encontrados:', users);
         // Retornar a lista de usuários
         res.json({ users });
