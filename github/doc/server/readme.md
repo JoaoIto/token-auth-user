@@ -39,6 +39,28 @@ mongoose.connection.on('error', (error) => {
 
 ## Rotas: 
 
+- **``Rota de registro: ``**: : Esta rota permite que novos usuários sejam registrados fornecendo um CPF e uma senha. Após o registro bem-sucedido, o usuário pode usar suas credenciais para fazer login no sistema.
+````ts
+app.post('/register', async (req, res) => {
+const { cpf, senha } = req.body;
+try {
+// Verificar se o usuário já existe no banco de dados
+const existingUser = await UserModel.findOne({ cpf });
+if (existingUser) {
+return res.status(400).json({ error: 'Usuário já existe' });
+}
+// Criar um novo usuário no banco de dados
+const newUser = new UserModel({ cpf, senha });
+await newUser.save();
+res.status(201).json({ message: 'Usuário cadastrado com sucesso' });
+} catch (error) {
+console.error('Erro durante o cadastro:', error);
+res.status(500).json({ error: 'Erro interno do servidor' });
+}
+});
+
+````
+
 - **``Rota de login: ``**: Essa é a rota da principal funcionalidade para qual o sistema foi feito, na qual
 temos os parâmetros padrão de requisições, (``request, response``), sendo o corpo da requisição, o que esperamos
 receber do usuário a ser logado.
