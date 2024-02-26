@@ -79,7 +79,7 @@ app.get('/users', async (req, res) => {
     try {
         console.log('\nBuscando usuários...\n');
         // Buscar todos os usuários no banco de dados
-        const users = await UserModel.find();
+        const users = await UserModel.find({}, 'cpf');
         console.log('Usuários encontrados:', users);
         // Retornar a lista de usuários
         res.json({ users });
