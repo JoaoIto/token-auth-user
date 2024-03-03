@@ -7,6 +7,15 @@ padrão de CPF e senha, e liberação do token, a partir de usuário também pr�
 <img src="https://raw.githubusercontent.com/JoaoIto/token-auth-user/main/github/assets/baseTlDraw.jpeg">
 
 ---
+
+## How to use: 
+
+Para instalar o componente, você pode usar npm ou yarn:
+
+```bash
+npm install auth-token-component
+```
+
 ## How start:
 
 ````
