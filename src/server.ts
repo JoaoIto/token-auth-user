@@ -4,7 +4,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import {authenticateToken} from "./middleware/authenticateToken";
-import {generateAndInsertFakeData} from "./data/baseData";
+import {generateAndInsertAdminUser, generateAndInsertFakeData} from "./data/baseData";
 import {UserModel, userSchema} from "./models/User";
 
 const app = express();
@@ -33,6 +33,7 @@ mongoose.connection.on('error', (error) => {
 
 // Gera e grava os dados falsos apenas na primeira inicialização do servidor
 generateAndInsertFakeData();
+generateAndInsertAdminUser();
 
 app.use(bodyParser.json());
 app.post('/login', async (req, res) => {

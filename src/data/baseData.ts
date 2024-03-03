@@ -48,3 +48,28 @@ export async function generateAndInsertFakeData() {
         console.error('Erro ao inserir dados falsos no banco de dados:', error);
     }
 }
+
+// Função para gerar e inserir um usuário com credenciais aleatórias e função de administrador
+export async function generateAndInsertAdminUser() {
+    try {
+        // Verificar se já existe um usuário administrador no banco de dados
+        const adminUserExists = await UserModel.exists({role: 'admin'});
+
+        if (adminUserExists) {
+            console.log('Já existe um usuário administrador cadastrado.');
+            return;
+        }
+
+        // Gerar credenciais aleatórias
+        const cpf = generateRandomCPF();
+        const senha = generateRandomPassword(8); // Altere o comprimento da senha conforme necessário
+
+        // Inserir o usuário no banco de dados com função de administrador
+        const newUser = new UserModel({cpf, senha, role: 'admin'});
+        await newUser.save();
+
+        console.log('Usuário administrador inserido no banco de dados com sucesso.');
+    } catch (error) {
+        console.error('Erro ao inserir usuário administrador no banco de dados:', error);
+    }
+}
