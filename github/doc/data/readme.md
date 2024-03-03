@@ -93,4 +93,44 @@ export async function generateAndInsertFakeData() {
 }
 ````
 
+## ``generateAndInsertAdminUser()``
+
+Esta função gera e insere um usuário com credenciais aleatórias e função de administrador no banco de dados, caso ainda não exista um usuário com essa função.
+
+### Funcionamento
+
+1. Verifica se já existe um usuário com função de administrador no banco de dados consultando a coleção de usuários.
+2. Se não houver um usuário administrador existente, gera credenciais aleatórias para o novo usuário.
+3. Utiliza o modelo `UserModel` para criar um novo usuário com as credenciais aleatórias e função de administrador.
+4. Salva o novo usuário no banco de dados.
+5. Exibe uma mensagem de sucesso após a inserção do usuário administrador.
+6. Trata erros caso ocorram durante o processo de inserção.
+
+````ts
+// Função para gerar e inserir um usuário com credenciais aleatórias e função de administrador
+export async function generateAndInsertAdminUser() {
+    try {
+        // Verificar se já existe um usuário administrador no banco de dados
+        const adminUserExists = await UserModel.exists({role: 'admin'});
+
+        if (adminUserExists) {
+            console.log('Já existe um usuário administrador cadastrado.');
+            return;
+        }
+
+        // Gerar credenciais aleatórias
+        const cpf = generateRandomCPF();
+        const senha = generateRandomPassword(8); // Altere o comprimento da senha conforme necessário
+
+        // Inserir o usuário no banco de dados com função de administrador
+        const newUser = new UserModel({cpf, senha, role: 'admin'});
+        await newUser.save();
+
+        console.log('Usuário administrador inserido no banco de dados com sucesso.');
+    } catch (error) {
+        console.error('Erro ao inserir usuário administrador no banco de dados:', error);
+    }
+}
+````
+
 ---
