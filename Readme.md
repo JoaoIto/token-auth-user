@@ -18,6 +18,7 @@ Isso vai iniciar as rotas do servidor:
 ````
 get => /users
 post => /login {cpf, senha}
+post => /register {cpf, senha}
 ````
 
 A rota de get, devolve todos os usuários, porém protegida com um token já validado a partir de um usuário,
