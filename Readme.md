@@ -13,7 +13,7 @@ padrão de CPF e senha, e liberação do token, a partir de usuário também pr�
 Para instalar o componente, você pode usar npm ou yarn:
 
 ```bash
-npm install auth-token-component
+npm i node_auth-login
 ```
 
 ## How start:
