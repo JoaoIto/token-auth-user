@@ -36,9 +36,10 @@ export async function generateAndInsertFakeData() {
         for (let i = 0; i < numberOfUsers; i++) {
             const cpf = generateRandomCPF();
             const senha = generateRandomPassword(4);
-            fakeData.push({ cpf, senha });
+            fakeData.push({ cpf, senha, role: "user" });
         }
 
+        console.log(fakeData);
         // Inserir dados falsos no banco de dados
         await UserModel.insertMany(fakeData);
 
